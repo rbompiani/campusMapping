@@ -1,0 +1,58 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"Building Name": "Agricultural & Life Sciences",
+				"Sector": "C",
+				"Sub-sector": "C-2",
+				"Building No.": 79,
+				"Abbreviation": "ALS",
+				"Size": 182437,
+				"Footprint": 39667,
+				"Floors": null,
+				"Construction": 1992,
+				"Renovation": null,
+				"Architect": null,
+				"Use": "Research",
+				"College": "College of Agricultural Sciences",
+				"Program": "Crop and Soil Sciences, Horticulture, Biochemistry and Biophysics, Botany and Plant Pathology",
+				"Historic - All": null,
+				"Historic - City": null,
+				"Historic - OSBHE": null,
+				"Historic - OSU": null,
+				"Photo": null,
+				"Online Info": null,
+				"Building Age": "19",
+				"Condition": "Good"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-123.281969, 44.566857],
+						[-123.281659, 44.566857],
+						[-123.281655, 44.566743],
+						[-123.281682, 44.566741],
+						[-123.281686, 44.566684],
+						[-123.281613, 44.566683],
+						[-123.281617, 44.566335],
+						[-123.281733, 44.566332],
+						[-123.281736, 44.566124],
+						[-123.282365, 44.566126],
+						[-123.282364, 44.566475],
+						[-123.282239, 44.566475],
+						[-123.282232, 44.566542],
+						[-123.282246, 44.566543],
+						[-123.282246, 44.566684],
+						[-123.281944, 44.566684],
+						[-123.281941, 44.566744],
+						[-123.281968, 44.566746],
+						[-123.281969, 44.566857]
+					]
+				]
+			}
+		}
+	]
+}
