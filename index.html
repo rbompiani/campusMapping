@@ -10,7 +10,7 @@
 <html> 
 <head> 
  
-<title>Testing</title> 
+<title>Oregon State Campus Building Inventory</title> 
 <meta /> 
 <!--Stylesheets -->
 <link type="text/css" rel="stylesheet" href="OSUjs/style3.css">
@@ -18,7 +18,7 @@
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="OSUjs/closurec.js"></script>
 <script type="text/javascript">google.load('visualization', '1', {'packages':['corechart', 'table', 'geomap']});</script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js"></"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
 <script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
 
 <!--Custom js -->
@@ -35,8 +35,11 @@
 <script src="OSUjs/crashes.js" language="javascript" type="text/javascript"></script>
 
 <script type="text/javascript" id="script"> 
- 
-var center = new google.maps.LatLng(44.5653, -123.276);
+
+
+
+// ---------- OLD MAP CODE ---------- //
+/* var center = new google.maps.LatLng(44.5653, -123.276);
 var sect1center = new google.maps.LatLng(44.5685, -123.282);
 var zone2center = new google.maps.LatLng(44.5657, -123.279);
 var zone3center = new google.maps.LatLng(44.5633, -123.276);
@@ -138,13 +141,117 @@ function initialize() {
 	document.layers.parking.checked=false;
 	
 	transOverlay = new newOverlay(bounds, srcImage, map);
+} */
+
+// ---------- NEW MAP CODE ---------- //
+
+// create map query constants
+const apiKey = 'AIzaSyDCbd6kaJ6PfibF3ul_mvkL5tPTkYyeV50';
+const lattitude = 44.5653;
+const longitude = -123.276;
+const initZoom = 16;
+var center = new google.maps.LatLng(44.5653, -123.276);
+var map, sliderTimer, fusionLayer, slider, panoramioLayer, parkLayer;
+var d = new Date();
+var currentYear = d.getFullYear();
+
+// create function to call map
+function initMap() {
+    var map = new google.maps.Map(document.getElementById('map_canvas'), {
+        center: {lat: lattitude, lng: longitude},
+        zoom: initZoom,
+        mapTypeControl: false,
+        scaleControl: true,
+        streetViewControl: false,
+        fullscreenControl: false,
+            
+// custom styling of google map
+        styles:[
+            {
+                "elementType": "labels.text.fill",
+                "stylers": [{
+                    "color": "#808080"
+                }]
+            },
+            {
+                "featureType": "administrative",
+                "elementType": "geometry",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            },
+            {
+                "featureType": "landscape",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "color": "#d5d5d5"
+                }]
+            },
+            {
+                "featureType": "poi",
+                "elementType": "labels.icon",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "color": "#c0c0c0"
+                }]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "geometry.stroke",
+                "stylers": [{
+                    "color": "#979797"
+                }]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "labels.icon",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            },
+            {
+                "featureType": "water",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "color": "#9fb0b5"
+                }]
+            }
+        ]
+	});
+
+	// call external fuctions
+	initializeSlider();
+	init_selectmenu();
+	addStyle(getKey());
+	newAverage();
+	newTotal();
+	findWalks();
+	askCrashes();
+
+	document.layers.buildings.checked=true;	
+	document.layers.walking.checked=false;	
+	document.layers.trans.checked=false;	
+	document.layers.crash.checked=false;
+	document.layers.parking.checked=false;
 }
-
-
+	
 </script> 
+
 </head> 
  
-<body onload="initialize();"> 
+<body onload=initMap> 
  
     <div id="wrapper">
 
@@ -196,6 +303,11 @@ function initialize() {
 		
     <div id="map_canvas"></div>
 
+		<!-- SCRIPTS -->
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCbd6kaJ6PfibF3ul_mvkL5tPTkYyeV50&callback=initMap">
+        </script> 
+		
   </body>
 </html>
  
