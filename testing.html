@@ -1,0 +1,201 @@
+<!DOCTYPE html> 
+ 
+<!--
+  copyright (c) 2011 Google inc.
+ 
+  You are free to copy and use this sample.
+  License can be found here: http://code.google.com/apis/ajaxsearch/faq/#license
+--> 
+ 
+<html> 
+<head> 
+ 
+<title>Testing</title> 
+<meta /> 
+<!--Stylesheets -->
+<link type="text/css" rel="stylesheet" href="OSUjs/style3.css">
+<!--Google js-->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="OSUjs/closurec.js"></script>
+<script type="text/javascript">google.load('visualization', '1', {'packages':['corechart', 'table', 'geomap']});</script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></"></script>
+<script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
+
+<!--Custom js -->
+<script src="OSUjs/averageAge.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/changeColors.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/toggles.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/sidebarInfo.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/timelineSlider.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/buildingList.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/tester.js" language="javascript" type="text/javascript"></script>
+<!--<script src="OSUjs/kml.js" language="javascript" type="text/javascript"></script>-->
+<script src="OSUjs/polygons.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/transportation.js" language="javascript" type="text/javascript"></script>
+<script src="OSUjs/crashes.js" language="javascript" type="text/javascript"></script>
+
+<script type="text/javascript" id="script"> 
+ 
+var center = new google.maps.LatLng(44.5653, -123.276);
+var sect1center = new google.maps.LatLng(44.5685, -123.282);
+var zone2center = new google.maps.LatLng(44.5657, -123.279);
+var zone3center = new google.maps.LatLng(44.5633, -123.276);
+var zone4center = new google.maps.LatLng(44.5657, -123.271);
+var zoom = 16;
+var tableid = '1GFyylgHpkWisH9eksmVOYIfo6aK_nVWoIcSQbITG';
+var crashid = 1108614;
+var location_column = 'geometry, Construction, Usage, Sub-sector';
+var map, sliderTimer, fusionLayer, slider, panoramioLayer, parkLayer;
+var d = new Date();
+var currentYear = d.getFullYear();
+var parkTable = 1125878;
+
+
+
+function initialize() {
+  
+	map = new google.maps.Map(document.getElementById('map_canvas'), {
+		center: center,
+		zoom: zoom,
+		panControl: false,
+		zoomControl: false,
+		scaleControl: false,
+		streetViewControl: false,
+		mapTypeId: 'roadmap',
+		preserveViewport: true
+	});
+ 
+	var style = [
+		{
+			featureType: 'all',
+			elementType: 'all',
+			stylers: [
+				{ saturation: -60},
+				{gamma:2 }
+			]
+		}, 
+		{
+			featureType: 'all',
+			elementType: 'labels',
+			stylers: [
+				{ visibility: 'off' }
+			]
+		},
+		{
+			featureType: 'road.arterial',
+			elementType: 'geometry',
+			stylers: [
+				{ lightness: +100 }
+			]
+		}
+	];
+
+	var styledMapType = new google.maps.StyledMapType(style, {
+		map: map,
+		name: 'Styled Map'
+	});
+ 
+	map.mapTypes.set('map-style', styledMapType);
+	map.setMapTypeId('map-style');
+	
+	fusionLayer = new google.maps.FusionTablesLayer({
+		query: {
+			select: location_column,
+			from: tableid
+		},
+		suppressInfoWindows: true
+	});
+	
+	fusionLayer.setMap(map);
+	google.maps.event.addListener(fusionLayer, 'click', displayData);
+
+	parkLayer = new google.maps.FusionTablesLayer({
+		query: {
+			select: 'Location',
+			from: parkTable
+		},
+		suppressInfoWindows: true
+	});
+			
+	google.maps.event.addListener(parkLayer, 'click', displayData);
+	
+	var kmlLayer = new google.maps.KmlLayer('http://www.rbompiani.com/osu.kml');
+	kmlLayer.set('preserveViewport', true);
+	kmlLayer.setMap(map);
+	
+	initializeSlider();
+	init_selectmenu();
+	addStyle(getKey());
+	newAverage();
+	newTotal();
+	findWalks();
+	askCrashes();
+	
+	document.layers.buildings.checked=true;	
+	document.layers.walking.checked=false;	
+	document.layers.trans.checked=false;	
+	document.layers.crash.checked=false;
+	document.layers.parking.checked=false;
+	
+	transOverlay = new newOverlay(bounds, srcImage, map);
+}
+
+
+</script> 
+</head> 
+ 
+<body onload="initialize();"> 
+ 
+    <div id="wrapper">
+
+		<div id="lftSidebar">
+			<div class="margins">
+				<img src="OSUjs/osu.jpg" width="80px">
+				<p>Campus Timeline:</p>
+				<div id="slider">
+					<div class="goog-slider-thumb"></div>
+				</div>
+				<div id="slider-value"></div>
+				<p>Choose Color Scheme: </p>
+				<select onchange="addStyle(this.value);" id="colorOpts"></select> 
+				<div >					
+					<p>Select Zone: </p>
+					<select id="searchString" onchange="changeMap(this.value);">
+						<option id="allSectors" value="">--ALL--</option>
+						<option value="C1">C1</option>
+						<option value="C2">C2</option>
+						<option value="C3">C3</option>
+						<option value="D2">D2</option>
+					</select>
+				</div>
+				<!--Options for Showing, Hiding, and Filtering Google Fusion Table Information-->
+				<div>
+					<p>Show Layers:</p>
+					<form name="layers">
+						<input type="checkbox" id="buildings" name="buildings" onClick="testBuilding();"/>Buildings<br/>
+						<input type="checkbox" id="walking" name="walking" onClick="toggleWalking();"/>10 Min Walking Circles<br/>		
+						<input type="checkbox" id="trans" name="trans" onClick="transOverlay.toggleDOM();"/>Transportation Diagram<br/>							
+						<input type="checkbox" id="crash" name="crash" onClick="toggleCrashes();"/>Crashes<br/>	
+						<input type="checkbox" id="parking" name="parking" onClick="testParking();"/>Parking<br/>	
+						</form>
+				</div>
+			</div>	
+		</div>
+
+		<div id="rtSidebar">
+			<div id="info"></div>
+			<div class="margins">
+				<h2 id="selectTitle">Buildings Constructed by 2020</h1>
+				<div id="summary"></div>
+				<div id="bldgList"></div>
+				<br />
+				
+				<div id="terms"></div>
+			</div>
+		</div>
+		
+    <div id="map_canvas"></div>
+
+  </body>
+</html>
+ 
