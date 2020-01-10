@@ -146,6 +146,17 @@ function styleMap(prop) {
 
 }
 
+function selectSector(prop) {
+  map.data.setStyle(function (feature) {
+    const sector = feature.getProperty("Sub-sector");
+    if (sector != prop) {
+      return {
+        visible: false
+      }
+    }
+  });
+}
+
 // Create the where clause	
 function generateWhereRange(column_name, low, high) {
 
