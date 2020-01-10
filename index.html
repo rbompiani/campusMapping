@@ -231,10 +231,27 @@
 
 			map.data.setStyle(featureStyle);
 
+			map.data.setStyle(function (feature) {
+				const use = feature.getProperty('Use');
+				let color;
+				switch (use) {
+					case "Instructional":
+						color = "#FA7236"
+						break;
+					default:
+						color = "#999999"
+				}
+				return {
+					fillColor: color,
+					strokeWeight: 1,
+					fillOpacity: 1
+				};
+			});
+
 			// call external fuctions
 			initializeSlider();
 			init_selectmenu();
-			addStyle(getKey());
+			styleMap(getKey());
 			newAverage();
 			newTotal();
 			findWalks();
@@ -264,7 +281,7 @@
 				</div>
 				<div id="slider-value"></div>
 				<p>Choose Color Scheme: </p>
-				<select onchange="addStyle(this.value);" id="colorOpts"></select>
+				<select onchange="styleMap(this.value);" id="colorOpts"></select>
 				<div>
 					<p>Select Zone: </p>
 					<select id="searchString" onchange="changeMap(this.value);">
