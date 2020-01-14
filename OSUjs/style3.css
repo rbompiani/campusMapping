@@ -35,7 +35,7 @@
 	height: 15px;
 	}
 	
-#table
+#buildingList
 {
 	/*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size: 12px;
@@ -45,7 +45,7 @@
 	border-collapse: collapse;
 	text-align: left;
 }
-#table th
+#buildingList th
 {
 	font-size: 14px;
 	font-weight: normal;
@@ -53,12 +53,12 @@
 	padding: 10px 8px;
 	border-bottom: 2px solid #6678b1;
 }
-#table td
+#buildingList td
 {
 	border-bottom: 1px solid #ccc;
 	padding: 6px 8px;
 }
-#table tbody tr:hover td
+#buildingList tbody tr:hover td
 {
 	background: #d0dafd;
 	color: #000000;

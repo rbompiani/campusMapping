@@ -1,6 +1,5 @@
-
 // Create a Google Closure slider bar which can be used to select the
-// year by which to filter the Fusion Tables data.
+// year by which to filter the geoJSON data.
 function initializeSlider() {
 	var sliderElement = document.getElementById('slider');
 	slider = new goog.ui.Slider;
@@ -21,28 +20,4 @@ function sliderValueToYr(value) {
 	return Math.round(value * 1.31 + 1889);
 }
 
-/*
-// Update the query used to filter Fusion Tables data using the
-// current value of the slider.
-function updateMap() {
-
-
-	var year = sliderValueToYr(slider.getValue());
-
-	fusionLayer.setOptions({
-		'query': {
-			select: 'geometry',
-			from: tableid,
-			where: 'Construction <='+ year}
-	});
-
-	document.getElementById("allSectors").selected = true;
-	document.getElementById("selectTitle").innerHTML = "Buildings Constructed by "+year;
-	var queryText = encodeURIComponent("SELECT 'Building Name', 'Construction', 'Size' FROM " +tableid+ " WHERE 'Construction' <=" +year);
-	var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
-
-	//set the callback function
-	query.send(getData);
-}
-*/
 
