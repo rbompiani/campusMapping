@@ -29,11 +29,6 @@ function toggleBuildings(state) {
   map.data.setStyle({ visible: document.getElementById("buildings").checked });
 }
 
-function testPhotos() {
-  if (document.getElementById('photos').checked == true) { showPhotos(); }
-  else { hidePhotos(); }
-}
-
 function testOverlays() {
   if (document.getElementById('overlays').checked == true) { showOverlays(); }
   else { hideOverlays(); }

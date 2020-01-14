@@ -18,6 +18,8 @@
 	<!--Google js-->
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="OSUjs/closurec.js"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+
 
 	<!--Custom js -->
 	<script src="OSUjs/averageAge.js" language="javascript" type="text/javascript"></script>
@@ -25,7 +27,6 @@
 	<script src="OSUjs/toggles.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/sidebarInfo.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/timelineSlider.js" language="javascript" type="text/javascript"></script>
-	<!--<script src="OSUjs/kml.js" language="javascript" type="text/javascript"></script>-->
 	<script src="OSUjs/polygons.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/transportation.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/crashes.js" language="javascript" type="text/javascript"></script>
@@ -138,7 +139,7 @@
 			document.layers.crash.checked=false;
 			document.layers.parking.checked=false;
 			
-			transOverlay = new newOverlay(bounds, srcImage, map);
+			
 		} */
 
 		// ---------- NEW MAP CODE ---------- //
@@ -148,9 +149,7 @@
 		const lattitude = 44.5653;
 		const longitude = -123.276;
 		const initZoom = 16;
-		var map, sliderTimer, fusionLayer, slider, panoramioLayer, parkLayer;
-		var d = new Date();
-		var currentYear = d.getFullYear();
+		var map, sliderTimer, slider, parkLayer;
 
 		// create function to call map
 		function initMap() {
@@ -229,21 +228,12 @@
 
 			map.data.setStyle(featureStyle);
 
-			map.data.setStyle(function (feature) {
-				const use = feature.getProperty('Use');
-				let color;
-				switch (use) {
-					case "Instructional":
-						color = "#FA7236"
-						break;
-					default:
-						color = "#999999"
-				}
-				return {
-					fillColor: color,
-					strokeWeight: 1,
-					fillOpacity: 1
-				};
+			transOverlay = new newOverlay(bounds, srcImage, map);
+
+			var kmlLayer = new google.maps.KmlLayer('osuBound.kml', {
+				suppressInfoWindows: true,
+				preserveViewport: false,
+				map: map
 			});
 
 			// call external fuctions
