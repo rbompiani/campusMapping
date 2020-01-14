@@ -1,4 +1,6 @@
 var legend_width = '150px';
+
+// Define colors and categories for styling map
 var columns = {
   '--SELECT--': [
     {
@@ -122,8 +124,88 @@ function init_selectmenu() {
 }
 
 
+// ----- UPDATE THEMAP BASED ON SLIDER YEAR ----- //
+function updateMap() {
 
-function styleMap(prop) {
+  // get date of slider
+  let year = sliderValueToYr(slider.getValue());
+  // get value of select
+  let colorScheme = document.getElementById("colorOpts").value;
+
+  let buildingData = "<table id='buildingTable'>";
+  let bldgAges = [];
+  let totalGSF;
+  const table = document.getElementById("buildingList");
+  table.innerHTML = "";
+
+  // if date <= year of construction, show the feature on the map
+  map.data.setStyle(function (feature) {
+    const constYear = feature.getProperty("Construction");
+
+    // if the building is shown, push it to a list for the sidebar
+    if (constYear <= year) {
+
+      // Create an empty <tr> element and add it to the 1st position of the table:
+      let row = table.insertRow(0);
+
+      // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+      let nameCell = row.insertCell(0);
+      let yearCell = row.insertCell(1);
+      yearCell.classList.add("bldgYear");
+      let gsfCell = row.insertCell(2);
+      gsfCell.classList.add("bldgGsf");
+
+      // Add some text to the new cells:
+      nameCell.innerHTML = feature.getProperty("Building Name");
+      yearCell.innerHTML = feature.getProperty("Construction");
+      gsfCell.innerHTML = feature.getProperty("Size");
+    };
+
+    const ageCells = table.getElementsByClassName('bldgYear');
+    const gsfCells = table.getElementsByClassName('bldgGsf');
+    let gsfSum = 0;
+    let ageSum = 0;
+    let ageAvg = 0;
+
+    for (var i = 0; i < ageCells.length; i++) {
+      ageSum += isNaN(ageCells[i].innerHTML) ? 0 : parseInt(ageCells[i].innerHTML);
+    }
+
+    for (var i = 0; i < gsfCells.length; i++) {
+      gsfSum += isNaN(ageCells[i].innerHTML) ? 0 : parseInt(ageCells[i].innerHTML);
+    }
+
+    ageAvg = Math.round(new Date().getFullYear() - ageSum / ageCells.length);
+    document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + ageCells.length + "</td></tr><tr><td>Average Age:</td><td>" + ageAvg + "</td></tr><tr><td> Total Building Area:</td><td>" + gsfSum + "</td></tr></table><br/>";
+
+    return {
+      visible: constYear <= year
+    }
+  })
+
+  // add color style based on value of select
+  colorMap(colorScheme)
+
+  // ----- Update SIDEBAR ----- //
+
+
+  console.log("your data is", buildingData);
+
+  // find average age
+  //let ageTotal = bldgAges.reduce((previous, current) => current += previous);
+  //let avgAge = ageTotal / bldgAges.length;
+
+  //add the data to the page via innerHTML
+  //document.getElementById('bldgList').innerHTML = fusiontabledata;
+  //document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + bldgAges.length + "</td></tr><tr><td>Average Age:</td><td>" + avgAge + "</td></tr><tr><td> Total Building Area:</td><td>" + totalGsf + "</td></tr></table><br/>";
+
+
+}
+
+// ----- Add Building Data Row to Sidebar ---- //
+
+// ----- COLOR MAP BASED ON DROP DOWN ----- //
+function colorMap(prop) {
   const filter = columns[prop];
   let colorDef = {};
   for (type in filter) {
@@ -132,15 +214,17 @@ function styleMap(prop) {
     colorDef[category] = color;
   }
 
-  map.data.setStyle(function (feature) {
+  map.data.forEach(function (feature) {
     const filterProp = feature.getProperty(prop);
     const color = colorDef[filterProp] || "#999999";
-    return {
+
+    // override existing style for this feature
+    map.data.overrideStyle(feature, {
       fillColor: color,
       strokeWeight: 1,
       fillOpacity: 1
-    };
-  });
+    });
+  })
 
   updateLegend(prop);
 
@@ -155,37 +239,9 @@ function selectSector(prop) {
       }
     }
   });
-}
-
-// Create the where clause	
-function generateWhereRange(column_name, low, high) {
-
-  //var newHigh = currentYear - low;
-  //var newLow = currentYear - high;
-  var whereClause = new Array();
-  whereClause.push("'");
-  whereClause.push(column_name);
-  whereClause.push("' >= ");
-  whereClause.push(low);
-  whereClause.push(" AND '");
-  whereClause.push(column_name);
-  whereClause.push("' <= ");
-  whereClause.push(high);
-  return whereClause.join('');
 
 }
 
-function generateWhereEquals(column_name, category) {
-
-  var whereClause = new Array();
-  whereClause.push("'");
-  whereClause.push(column_name);
-  whereClause.push("' = '");
-  whereClause.push(category);
-  whereClause.push("'");
-  return whereClause.join('');
-
-}
 
 // Create the legend with the corresponding colors
 function updateLegend(column) {

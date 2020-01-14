@@ -251,7 +251,7 @@
 			// call external fuctions
 			initializeSlider();
 			init_selectmenu();
-			styleMap(getKey());
+			colorMap(getKey());
 			newAverage();
 			newTotal();
 			findWalks();
@@ -281,7 +281,7 @@
 				</div>
 				<div id="slider-value"></div>
 				<p>Choose Color Scheme: </p>
-				<select onchange="styleMap(this.value);" id="colorOpts"></select>
+				<select onchange="colorMap(this.value);" id="colorOpts"></select>
 				<div>
 					<p>Select Zone: </p>
 					<select id="searchString" onchange="selectSector(this.value);">
@@ -312,9 +312,11 @@
 		<div id="rtSidebar">
 			<div id="info"></div>
 			<div class="margins">
-				<h2 id="selectTitle">Buildings Constructed by 2020</h1>
+				<h2 id="selectTitle">Buildings Constructed by <span id="selectedYear">2020</span></h1>
 					<div id="summary"></div>
-					<div id="bldgList"></div>
+					<div id="bldgList">
+						<table id="buildingList"></table>
+					</div>
 					<br />
 
 					<div id="terms"></div>
