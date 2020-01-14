@@ -173,7 +173,7 @@ function updateMap() {
     }
 
     ageAvg = Math.round(new Date().getFullYear() - ageSum / ageCells.length);
-    document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + ageCells.length + "</td></tr><tr><td>Average Age:</td><td>" + ageAvg + "</td></tr><tr><td> Total Building Area:</td><td>" + gsfSum + "</td></tr></table><br/>";
+    document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + ageCells.length + "</td></tr><tr><td>Average Age:</td><td>" + ageAvg + "</td></tr><tr><td> Total Building Area:</td><td>" + addCommas(gsfSum) + " gsf</td></tr></table><br/>";
 
     return {
       visible: constYear <= year
@@ -183,23 +183,7 @@ function updateMap() {
   // add color style based on value of select
   colorMap(colorScheme)
 
-  // ----- Update SIDEBAR ----- //
-
-
-  console.log("your data is", buildingData);
-
-  // find average age
-  //let ageTotal = bldgAges.reduce((previous, current) => current += previous);
-  //let avgAge = ageTotal / bldgAges.length;
-
-  //add the data to the page via innerHTML
-  //document.getElementById('bldgList').innerHTML = fusiontabledata;
-  //document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + bldgAges.length + "</td></tr><tr><td>Average Age:</td><td>" + avgAge + "</td></tr><tr><td> Total Building Area:</td><td>" + totalGsf + "</td></tr></table><br/>";
-
-
 }
-
-// ----- Add Building Data Row to Sidebar ---- //
 
 // ----- COLOR MAP BASED ON DROP DOWN ----- //
 function colorMap(prop) {
