@@ -169,10 +169,7 @@ function updateMap() {
 
     for (var i = 0; i < ageCells.length; i++) {
       ageSum += isNaN(ageCells[i].innerHTML) ? 0 : parseInt(ageCells[i].innerHTML);
-    }
-
-    for (var i = 0; i < gsfCells.length; i++) {
-      gsfSum += isNaN(ageCells[i].innerHTML) ? 0 : parseInt(ageCells[i].innerHTML);
+      gsfSum += isNaN(gsfCells[i].innerHTML) ? 0 : parseInt(gsfCells[i].innerHTML);
     }
 
     ageAvg = Math.round(new Date().getFullYear() - ageSum / ageCells.length);
