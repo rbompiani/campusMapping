@@ -250,8 +250,6 @@
 			initializeSlider();
 			init_selectmenu();
 			colorMap(getKey());
-			newAverage();
-			newTotal();
 			findWalks();
 			askCrashes();
 
@@ -294,8 +292,8 @@
 				<div>
 					<p>Show Layers:</p>
 					<form name="layers">
-						<input type="checkbox" id="buildings" name="buildings"
-							onClick="testBuilding();" />Buildings<br />
+						<input type="checkbox" id="buildings" name="buildings" onClick="toggleBuildings();"
+							checked />Buildings<br />
 						<input type="checkbox" id="walking" name="walking" onClick="toggleWalking();" />10 Min Walking
 						Circles<br />
 						<input type="checkbox" id="trans" name="trans"
