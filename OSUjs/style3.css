@@ -74,13 +74,15 @@ body {
 }
 
 #bldgInfo {
-	width: 260px;
-	margin: 0px;
-	padding: 0px;
+	width: 200px;
+	border-bottom: 2px solid #6678b1;
+	margin: 20px;
+	padding-bottom: 20px;
 }
 
-.bldgTitle {
-	font-size: 12px;
+.category {
+	font-weight: bold;
+	width: 60px;
 }
 
 #buildingList
