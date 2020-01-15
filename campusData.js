@@ -22,7 +22,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": null,
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/als.jpg",
 				"Online Info": null,
 				"Building Age": 19,
 				"Condition": "Good"
@@ -75,7 +75,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": "0B3UEU5EdYNXdODM2MmE4MTEtOGVmOC00ZTkyLTlmMzYtZTI0MjhmYTk0OTJk&export=download&hl=en_US",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/asian_and_pacific_cultural_center.jpg",
 				"Online Info": null,
 				"Building Age": 61,
 				"Condition": "Poor"
@@ -132,7 +132,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": null,
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/avery_lodge.jpg",
 				"Online Info": null,
 				"Building Age": 59,
 				"Condition": "Good"
@@ -179,7 +179,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": null,
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/azalea_house.jpg",
 				"Online Info": null,
 				"Building Age": 59,
 				"Condition": "Good"
@@ -222,7 +222,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://lh4.googleusercontent.com/z3R8kwDj_raJi84mnYa03C5-p3SNo9byLf36zpxJX1VTOkQC5GyHtfdF0Idt1qX0iE4_n9E-qbxFKfnKWUda37qovA=s512",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/ballard_extension_hall.jpg",
 				"Online Info": null,
 				"Building Age": 91,
 				"Condition": "Fair"
@@ -271,7 +271,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://lh4.googleusercontent.com/t-XtKS5d-zVNf-z70e08Qsj0d4_XM9MqiLcR_n79vPo26gtoFsnobYUAZJQJxV_HMaBluBlb27mFerF5xKbB1h2qCA=s512",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/batcheller_hall.jpg",
 				"Online Info": null,
 				"Building Age": 98,
 				"Condition": "Fair"
@@ -310,7 +310,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": "https://lh5.googleusercontent.com/i0uBqIxEx5maWJgEY-Jp2RN4qrSt7BEfW6AZyKdJUJWL72bEJjBgm4yle2zhQHHdZryz7kR_wBEM7h7cPr_a-jOO1A=s512",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/bates_hall.jpg",
 				"Online Info": null,
 				"Building Age": 19,
 				"Condition": "Good"
@@ -380,7 +380,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": null,
-				"Photo": "https://docs.google.com/uc?id=0B3UEU5EdYNXdNDdiMGMzZDYtZjc2Yy00MzI2LThjNDYtZTNiM2VkNjQwYmY1&export=download&authkey=CPjW_xw&hl=en",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/bell_tower.jpg",
 				"Online Info": "http://oregonstate.edu/ua/ncs/archives/2001/oct/osu-dedicates-new-bell-tower-alumnus-h-dean-pap%C3%A9",
 				"Building Age": 10,
 				"Condition": "Good"
@@ -419,7 +419,7 @@ var data = {
 				"Historic - City": "Yes",
 				"Historic - OSBHE": "Yes",
 				"Historic - OSU": "Contributing",
-				"Photo": "https://docs.google.com/uc?id=0B3UEU5EdYNXdNDdiMGMzZDYtZjc2Yy00MzI2LThjNDYtZTNiM2VkNjQwYmY1&export=download&authkey=CPjW_xw&hl=en",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/womens_center.jpg",
 				"Online Info": null,
 				"Building Age": 119,
 				"Condition": "Good"
@@ -462,7 +462,7 @@ var data = {
 				"Historic - City": "Yes",
 				"Historic - OSBHE": "Yes",
 				"Historic - OSU": "Contributing",
-				"Photo": null,
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/benton-hall.jpg",
 				"Online Info": null,
 				"Building Age": 122,
 				"Condition": "Fair"
@@ -512,7 +512,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://docs.google.com/uc?id=0B3UEU5EdYNXdYWFhNTA3MWYtN2I1YS00ZWY1LWE2MjYtY2FiNmRmMDI1ODZk&export=download&hl=en_US",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/bexell_hall.jpg",
 				"Online Info": null,
 				"Building Age": 89,
 				"Condition": "Fair"
@@ -559,7 +559,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://docs.google.com/uc?id=0B3UEU5EdYNXdNjgxYTViNWEtNGRmYS00ZDU2LWIyZmMtYjY4ZWE4YWVjMDIx&export=download&hl=en_US",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/lonnie_b_harris_black_cultural_center.jpg",
 				"Online Info": null,
 				"Building Age": 91,
 				"Condition": "Poor"
@@ -598,7 +598,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://lh4.googleusercontent.com/3dw9K7RSAIVkGZAQpQpef7CyGtEdSdvWsbN8rFsfghXUegMiQ49cBYOppYRirt3F8BgVIUcOaqDdTubUGkh_BtBy9g=s512",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/burt_hall.jpg",
 				"Online Info": null,
 				"Building Age": 41,
 				"Condition": "Fair"
@@ -685,7 +685,7 @@ var data = {
 				"Historic - City": null,
 				"Historic - OSBHE": null,
 				"Historic - OSU": "Contributing",
-				"Photo": "https://lh5.googleusercontent.com/FLHuHZQp-42gnSKmpEYC5o5UnYfBp_0NghRmV9YHg2LxABHPX1rHMuLJFHSckPL7d-yUoTcrOnEkZWvvhQNECNKG_w=s512",
+				"Photo": "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/buxton.jpg",
 				"Online Info": null,
 				"Building Age": 50,
 				"Condition": "Good"

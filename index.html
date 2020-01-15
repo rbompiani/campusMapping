@@ -236,6 +236,23 @@
 				map: map
 			});
 
+			// Add Building Data To Sidebar on Hover
+			map.data.addListener('mouseover', function (event) {
+				let buildData = "";
+				let bldgTable = document.getElementById('bldgInfo');
+				buildData += "<tr><td colspan='2'><img class='bldgPhoto' src =" + event.feature.getProperty("Photo") + "></td></tr>";
+				buildData += "<tr><td colspan='2'><h2>" + event.feature.getProperty("Building Name") + "</h2></td></tr>";
+				buildData += "<tr><td class='category'>Building Age:</td><td>" + (new Date().getFullYear() - event.feature.getProperty("Construction")) + " years</td></tr>";
+				buildData += "<tr><td class='category'>Size:</td><td>" + addCommas(event.feature.getProperty("Size")) + " gsf</td></tr>";
+				buildData += "<tr><td class='category'>Condition:</td><td>" + event.feature.getProperty("Condition") + "</td></tr>";
+				buildData += "<tr><td class='category'>Program:</td><td>" + event.feature.getProperty("Program") + "</td></tr>";
+				bldgTable.innerHTML = buildData;
+			});
+
+			map.data.addListener('mouseout', function (event) {
+				document.getElementById('bldgInfo').innerHTML = "";
+			});
+
 			// call external fuctions
 			initializeSlider();
 			init_selectmenu();
@@ -254,7 +271,7 @@
 
 </head>
 
-<body onload=initMap>
+<body>
 
 	<div id="wrapper">
 
@@ -296,7 +313,10 @@
 		</div>
 
 		<div id="rtSidebar">
-			<div id="info"></div>
+			<div id="info">
+				<table id="bldgInfo">
+				</table>
+			</div>
 			<div class="margins">
 				<h2 id="selectTitle">Buildings Constructed by <span id="selectedYear">2020</span></h1>
 					<div id="summary"></div>

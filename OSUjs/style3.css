@@ -1,3 +1,36 @@
+html {
+	margin: 0,0,0,0;
+	height: 95%;
+    }
+	
+body {
+	margin: 0,0,0,0;
+      font-size: 10px;
+      font-family: sans-serif;
+	  height: 100%;
+	  color: #4E5967;
+    }
+.goog-slider-horizontal {
+      border: solid 1px #CCCCCC;
+      background-color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+.goog-slider-thumb {
+      position: absolute;
+      background-color: #3399CC;
+      overflow: hidden;
+      width: 10px;
+      height: 100%;
+      top: 0;
+    }
+
+.margins {
+	margin: 20px;
+	height:100%;
+}
+
 #wrapper {
 	width: 100%;
 	height: 100%;
@@ -18,6 +51,7 @@
 	}
 
 #rtSidebar{
+	display: inline-block;
 	width: 260px;
 	height: 100%;
 	float: right;	
@@ -28,13 +62,27 @@
 	border-width: 0px;
 	border-color: #ffffff;
 	border-left: 4px solid #ffffff;
-	}
+}
 
 #slider {
 	width: 160px;
 	height: 15px;
 	}
-	
+
+.bldgPhoto {
+	width: 260px;
+}
+
+#bldgInfo {
+	width: 260px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.bldgTitle {
+	font-size: 12px;
+}
+
 #buildingList
 {
 	/*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -45,6 +93,7 @@
 	border-collapse: collapse;
 	text-align: left;
 }
+
 #buildingList th
 {
 	font-size: 14px;
@@ -86,84 +135,3 @@
 	padding: 6px 8px;
 }
 
-	/*
-#sector1Pie {
-	position:absolute;
-	top: 140px;
-	left: 330px;
-	}
-	
-#sector2Pie {
-	position:absolute;
-	top: 90px;
-	left: 520px;
-	}
-	
-#sector3Pie {
-	position:absolute;
-	top: 280px;
-	left: 320px;
-	}
-
-#sector4Pie {
-	position:absolute;
-	top: 238px;
-	left: 510px;
-	}
-
-#sector5Pie {
-	position:absolute;
-	top: 330px;
-	left: 860px;
-	}
-
-#sector6Pie {
-	position:absolute;
-	top: 460px;
-	left: 340px;
-	}
-
-#sector7Pie {
-	position:absolute;
-	top: 435px;
-	left: 550px;
-	}
-
-#sector8Pie {
-	position:absolute;
-	top: 485px;
-	left: 780px;
-	}
-*/	
-html {
-	margin: 0,0,0,0;
-	height: 95%;
-    }
-	
-body {
-	margin: 0,0,0,0;
-      font-size: 10px;
-      font-family: sans-serif;
-	  height: 100%;
-	  color: #4E5967;
-    }
-.goog-slider-horizontal {
-      border: solid 1px #CCCCCC;
-      background-color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-.goog-slider-thumb {
-      position: absolute;
-      background-color: #3399CC;
-      overflow: hidden;
-      width: 10px;
-      height: 100%;
-      top: 0;
-    }
-
-.margins {
-	margin: 20px;
-	height:100%;
-	}
