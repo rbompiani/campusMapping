@@ -212,14 +212,17 @@
 
                 <!----- TIMELINE SLIDER ------->
                 <h2>Campus Timeline:</h2>
-                <div class="slidecontainer">
+                <div class="input">
                     <input type="range" min="1889" max="2020" value="2020" class="slider" id="myRange">
                     <p>Year: <span id="demo"></span></p>
                 </div>
 
                 <!----- SELECT COLOR ------->
-                <h2>Choose Color Scheme: </h2>
-                <select onchange="colorMap(this.value);" id="colorOpts"></select>
+                <div>
+                    <h2>Choose Color Scheme: </h2>
+                    <select onchange="colorMap(this.value);" id="colorOpts"></select>
+                </div>
+
 
                 <!----- LAYERS TO SHOW ------->
                 <h2>Show Layers:</h2>
