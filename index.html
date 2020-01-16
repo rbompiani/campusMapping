@@ -229,13 +229,17 @@
                 <form name="layers">
                     <input type="checkbox" id="buildings" name="buildings" onClick="toggleBuildings();"
                         checked />Buildings<br />
+                    <!-----
                     <input type="checkbox" id="trans" name="trans" onClick="transOverlay.toggleDOM();" />Transportation
                     Diagram<br />
-                    <input type="checkbox" id="crash" name="crash" onClick="toggleCrashes();" />Crashes<br />
+                    ----->
+                    <input type="checkbox" id="crash" name="crash" onClick="toggleCrashes();" />Transportation
+                    Accidents<br />
                 </form>
             </div>
         </div>
 
+        <!----- RIGHT SIDEBAR ------->
         <div id="rtSidebar">
             <div id="info">
                 <div id="bldgPhoto"></div>
@@ -269,6 +273,7 @@
 
         slider.oninput = function () {
             output.innerHTML = this.value;
+            document.getElementById("selectedYear").innerHTML = this.value;
             updateMap(this.value);
         }
     </script>
