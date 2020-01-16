@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 
-<!--
-  copyright (c) 2011 Google inc.
- 
-  You are free to copy and use this sample.
-  License can be found here: http://code.google.com/apis/ajaxsearch/faq/#license
--->
-
 <html>
 
 <head>
 
 	<title>Oregon State Campus Building Inventory</title>
 	<meta />
+
 	<!--Stylesheets -->
 	<link type="text/css" rel="stylesheet" href="OSUjs/style3.css">
 	<!--Google js-->
@@ -25,122 +19,13 @@
 	<script src="OSUjs/averageAge.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/changeColors.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/toggles.js" language="javascript" type="text/javascript"></script>
-	<script src="OSUjs/sidebarInfo.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/timelineSlider.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/polygons.js" language="javascript" type="text/javascript"></script>
 	<script src="OSUjs/transportation.js" language="javascript" type="text/javascript"></script>
-	<script src="OSUjs/crashes.js" language="javascript" type="text/javascript"></script>
 
 	<script src="campusData.js" language="javascript" type="text/javascript"></script>
 
 	<script type="text/javascript" id="script">
-
-
-
-		// ---------- OLD MAP CODE ---------- //
-		/* var center = new google.maps.LatLng(44.5653, -123.276);
-		var sect1center = new google.maps.LatLng(44.5685, -123.282);
-		var zone2center = new google.maps.LatLng(44.5657, -123.279);
-		var zone3center = new google.maps.LatLng(44.5633, -123.276);
-		var zone4center = new google.maps.LatLng(44.5657, -123.271);
-		var zoom = 16;
-		var tableid = '1GFyylgHpkWisH9eksmVOYIfo6aK_nVWoIcSQbITG';
-		var crashid = 1108614;
-		var location_column = 'geometry, Construction, Usage, Sub-sector';
-		var map, sliderTimer, fusionLayer, slider, panoramioLayer, parkLayer;
-		var d = new Date();
-		var currentYear = d.getFullYear();
-		var parkTable = 1125878;
-		
-		
-		
-		function initialize() {
-		  
-			map = new google.maps.Map(document.getElementById('map_canvas'), {
-				center: center,
-				zoom: zoom,
-				panControl: false,
-				zoomControl: false,
-				scaleControl: false,
-				streetViewControl: false,
-				mapTypeId: 'roadmap',
-				preserveViewport: true
-			});
-		 
-			var style = [
-				{
-					featureType: 'all',
-					elementType: 'all',
-					stylers: [
-						{ saturation: -60},
-						{gamma:2 }
-					]
-				}, 
-				{
-					featureType: 'all',
-					elementType: 'labels',
-					stylers: [
-						{ visibility: 'off' }
-					]
-				},
-				{
-					featureType: 'road.arterial',
-					elementType: 'geometry',
-					stylers: [
-						{ lightness: +100 }
-					]
-				}
-			];
-		
-			var styledMapType = new google.maps.StyledMapType(style, {
-				map: map,
-				name: 'Styled Map'
-			});
-		 
-			map.mapTypes.set('map-style', styledMapType);
-			map.setMapTypeId('map-style');
-			
-			fusionLayer = new google.maps.FusionTablesLayer({
-				query: {
-					select: location_column,
-					from: tableid
-				},
-				suppressInfoWindows: true
-			});
-			
-			fusionLayer.setMap(map);
-			google.maps.event.addListener(fusionLayer, 'click', displayData);
-		
-			parkLayer = new google.maps.FusionTablesLayer({
-				query: {
-					select: 'Location',
-					from: parkTable
-				},
-				suppressInfoWindows: true
-			});
-					
-			google.maps.event.addListener(parkLayer, 'click', displayData);
-			
-			var kmlLayer = new google.maps.KmlLayer('http://www.rbompiani.com/osu.kml');
-			kmlLayer.set('preserveViewport', true);
-			kmlLayer.setMap(map);
-			
-			initializeSlider();
-			init_selectmenu();
-			addStyle(getKey());
-			newAverage();
-			newTotal();
-			findWalks();
-			askCrashes();
-			
-			document.layers.buildings.checked=true;	
-			document.layers.walking.checked=false;	
-			document.layers.trans.checked=false;	
-			document.layers.crash.checked=false;
-			document.layers.parking.checked=false;
-			
-			
-		} */
 
 		// ---------- NEW MAP CODE ---------- //
 

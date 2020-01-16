@@ -125,10 +125,9 @@ function init_selectmenu() {
 
 
 // ----- UPDATE THEMAP BASED ON SLIDER YEAR ----- //
-function updateMap() {
-
+function updateMap(slideYear) {
   // get date of slider
-  let year = sliderValueToYr(slider.getValue());
+  let year = slideYear;
   // get value of select
   let colorScheme = document.getElementById("colorOpts").value;
 
@@ -139,7 +138,7 @@ function updateMap() {
   table.innerHTML = "";
 
   // if date <= year of construction, show the feature on the map
-  map.data.setStyle(function (feature) {
+  buildingLayer.setStyle(function (feature) {
     const constYear = feature.getProperty("Construction");
 
     // if the building is shown, push it to a list for the sidebar
@@ -195,12 +194,12 @@ function colorMap(prop) {
     colorDef[category] = color;
   }
 
-  map.data.forEach(function (feature) {
+  buildingLayer.forEach(function (feature) {
     const filterProp = feature.getProperty(prop);
     const color = colorDef[filterProp] || "#999999";
 
     // override existing style for this feature
-    map.data.overrideStyle(feature, {
+    buildingLayer.overrideStyle(feature, {
       fillColor: color,
       strokeWeight: 1,
       fillOpacity: 1
@@ -210,19 +209,6 @@ function colorMap(prop) {
   updateLegend(prop);
 
 }
-
-function selectSector(prop) {
-  map.data.setStyle(function (feature) {
-    const sector = feature.getProperty("Sub-sector");
-    if (sector != prop) {
-      return {
-        visible: false
-      }
-    }
-  });
-
-}
-
 
 // Create the legend with the corresponding colors
 function updateLegend(column) {

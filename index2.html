@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Oregon State Campus Building Inventory</title>
+    <meta />
+
+    <!--Stylesheets -->
+    <link type="text/css" rel="stylesheet" href="./OSUjs/style.css">
+
+    <!--Custom js -->
+    <script src="./OSUjs/averageAge.js" language="javascript" type="text/javascript"></script>
+    <script src="./OSUjs/changeColors.js" language="javascript" type="text/javascript"></script>
+
+    <script src="campusData.js" language="javascript" type="text/javascript"></script>
+    <script src="crashData.js" language="javascript" type="text/javascript"></script>
+
+    <script type="text/javascript" id="script">
+
+        // ---------- NEW MAP CODE ---------- //
+
+        // create map query constants
+        const apiKey = 'AIzaSyDCbd6kaJ6PfibF3ul_mvkL5tPTkYyeV50';
+        const lattitude = 44.5653;
+        const longitude = -123.276;
+        const initZoom = 16;
+        var map, osuBoundary, buildingLayer, crashLayer;
+        var crashMarkers = [];
+
+        // toggle functions
+        function toggleBuildings() {
+            buildingLayer.getMap() ? buildingLayer.setMap(null) : buildingLayer.setMap(map);
+        }
+
+        function toggleCrashes() {
+            crashMarkers.forEach(marker => {
+                marker.getMap() ? marker.setMap(null) : marker.setMap(map);
+
+            })
+        }
+
+        // create function to call map
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map_canvas'), {
+                center: { lat: lattitude, lng: longitude },
+                zoom: initZoom,
+                mapTypeControl: false,
+                scaleControl: true,
+                streetViewControl: false,
+                fullscreenControl: false,
+
+                // custom styling of google map
+                styles: [
+                    {
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "saturation": -30
+                            },
+                            {
+                                "lightness": 30
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.neighborhood",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "stylers": [
+                            {
+                                "saturation": -50
+                            },
+                            {
+                                "lightness": 55
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "stylers": [
+                            {
+                                "lightness": 40
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            /* -------- LOAD GEOJSON DATA ----------*/
+
+            // Campus Boundary. //
+            osuBoundary = new google.maps.Data();
+
+            osuBoundary.loadGeoJson("osuBound.json");
+
+            osuBoundary.setStyle({
+                fillOpacity: 0,
+                strokeColor: '#cccccc',
+                strokeWeight: 2,
+                zIndex: -1
+            });
+
+            //osuBoundary.setMap(map);
+
+            // Buildings. //
+            buildingLayer = new google.maps.Data();
+
+            buildingLayer.loadGeoJson("campusData.json");
+
+            buildingLayer.setStyle({
+                strokeColor: '#333333',
+                strokeWeight: 1
+            });
+
+            buildingLayer.setMap(map);
+
+
+            // Crashes. //
+            crashLayer = new google.maps.Data();
+
+            crashLayer.loadGeoJson(
+                'crashData.json', {},
+                function (features) {
+                    crashLayer.forEach(function (feature) {
+                        var crashOptions = {
+                            strokeWeight: 0,
+                            fillColor: "#CC0000",
+                            fillOpacity: 0.5,
+                            center: feature.getGeometry().get(),
+                            radius: (feature.getProperty("Number") * 10),
+                            zIndex: -1
+                        };
+                        crashMarkers.push(new google.maps.Circle(crashOptions));
+                    });
+                }
+            );
+
+            // Add Building Data To Sidebar on Hover
+            buildingLayer.addListener('mouseover', function (event) {
+                document.getElementById('bldgPhoto').innerHTML = "<img class='bldgPhoto' src =" + event.feature.getProperty("Photo") + ">";
+                let buildData = "";
+                let bldgTable = document.getElementById('bldgInfo');
+                buildData += "<tr><td colspan='2' class='bldgTitle'><h2>" + event.feature.getProperty("Building Name") + "</h2></td></tr>";
+                buildData += "<tr><td class='category'>Building Age:</td><td>" + (new Date().getFullYear() - event.feature.getProperty("Construction")) + " years</td></tr>";
+                buildData += "<tr><td class='category'>Size:</td><td>" + addCommas(event.feature.getProperty("Size")) + " gsf</td></tr>";
+                buildData += "<tr><td class='category'>Condition:</td><td>" + event.feature.getProperty("Condition") + "</td></tr>";
+                buildData += "<tr><td class='category'>Program:</td><td>" + event.feature.getProperty("Program") + "</td></tr>";
+                bldgTable.innerHTML = buildData;
+            });
+
+            buildingLayer.addListener('mouseout', function (event) {
+                document.getElementById('bldgPhoto').innerHTML = "";
+                document.getElementById('bldgInfo').innerHTML = "";
+            });
+
+            // call external fuctions
+            init_selectmenu();
+            colorMap(getKey());
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!----- LEFT SIDEBAR ------->
+        <div id="lftSidebar">
+            <div class="margins">
+                <img src="./OSUjs/osu.jpg" width="80px">
+
+                <!----- TIMELINE SLIDER ------->
+                <h2>Campus Timeline:</h2>
+                <div class="slidecontainer">
+                    <input type="range" min="1889" max="2020" value="2020" class="slider" id="myRange">
+                    <p>Year: <span id="demo"></span></p>
+                </div>
+
+                <!----- SELECT COLOR ------->
+                <h2>Choose Color Scheme: </h2>
+                <select onchange="colorMap(this.value);" id="colorOpts"></select>
+
+                <!----- LAYERS TO SHOW ------->
+                <h2>Show Layers:</h2>
+                <form name="layers">
+                    <input type="checkbox" id="buildings" name="buildings" onClick="toggleBuildings();"
+                        checked />Buildings<br />
+                    <input type="checkbox" id="trans" name="trans" onClick="transOverlay.toggleDOM();" />Transportation
+                    Diagram<br />
+                    <input type="checkbox" id="crash" name="crash" onClick="toggleCrashes();" />Crashes<br />
+                </form>
+            </div>
+        </div>
+
+        <div id="rtSidebar">
+            <div id="info">
+                <div id="bldgPhoto"></div>
+                <table id="bldgInfo">
+                </table>
+            </div>
+            <div class="margins">
+                <h2 id="selectTitle">Buildings Constructed by <span id="selectedYear">2020</span></h1>
+                    <div id="summary"></div>
+                    <div id="bldgList">
+                        <img id="bldgTitle">
+                </h2>
+                <table id="buildingList"></table>
+            </div>
+            <br />
+
+            <div id="terms"></div>
+        </div>
+    </div>
+
+    <div id="map_canvas"></div>
+
+    <!-- SCRIPTS -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCbd6kaJ6PfibF3ul_mvkL5tPTkYyeV50&callback=initMap">
+        </script>
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+            updateMap(this.value);
+        }
+    </script>
+
+</body>
+
+</html>
