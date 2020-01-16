@@ -11,7 +11,6 @@
     <link type="text/css" rel="stylesheet" href="./OSUjs/style.css">
 
     <!--Custom js -->
-    <script src="./OSUjs/averageAge.js" language="javascript" type="text/javascript"></script>
     <script src="./OSUjs/changeColors.js" language="javascript" type="text/javascript"></script>
 
     <script type="text/javascript" id="script">
@@ -48,7 +47,7 @@
         function toggleCrashes() {
             crashMarkers.forEach(marker => {
                 marker.getMap() ? marker.setMap(null) : marker.setMap(map);
-
+                map.setZoom(15);
             })
         }
 
@@ -135,7 +134,7 @@
                 zIndex: -1
             });
 
-            //osuBoundary.setMap(map);
+            osuBoundary.setMap(map);
 
             // Buildings. //
             buildingLayer = new google.maps.Data();
@@ -169,6 +168,10 @@
                     });
                 }
             );
+
+            // Image Overlay. //
+
+            //transOverlay = new newOverlay(bounds, srcImage, map);
 
             // Add Building Data To Sidebar on Hover
             buildingLayer.addListener('mouseover', function (event) {
