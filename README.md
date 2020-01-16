@@ -12,15 +12,15 @@ expansion of the campus.
 
 #### 2. View the Campus as Built, By Year
 - Timeline slider filters buildings by year built, and places them on the map
-![](ReadmeImages/timeline.jpg)
+![](ReadmeImages/timeline.JPG)
 
 #### 3. View Buildings by Use, Condition, and Historical Designation
 - Use the dropdown list to graphically view building properties
-![](ReadmeImages/Styling.jpg)
+![](ReadmeImages/Styling.JPG)
 
 #### 4. Toggle Traffic Crash Data
 - Circles indicate accident intersections, scaled by number of incidents
-![](ReadmeImages/accidents.jpg)
+![](ReadmeImages/accidents.JPG)
 
 <p>&nbsp;</p>
 
