@@ -175,7 +175,9 @@ function updateMap(slideYear) {
     document.getElementById('summary').innerHTML = "<table id='bldgSummary'><tr><td>Number of Buildings:</td><td>" + ageCells.length + "</td></tr><tr><td>Average Age:</td><td>" + ageAvg + "</td></tr><tr><td> Total Building Area:</td><td>" + addCommas(gsfSum) + " gsf</td></tr></table><br/>";
 
     return {
-      visible: constYear <= year
+      visible: constYear <= year,
+      strokeColor: '#333333',
+      strokeWeight: 1
     }
   })
 
