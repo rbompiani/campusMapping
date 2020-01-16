@@ -8,17 +8,19 @@ expansion of the campus.
 ## Features
 #### 1. View Building Data on Hover
 - geoJSON properties for each building are displayed in the information sidebar
-![](http://rbompiani.com/images/projects/recipe1.jpg)
+![](ReadmeImages/Building.jpg)
 
 #### 2. View the Campus as Built, By Year
 - Timeline slider filters buildings by year built, and places them on the map
-![](http://rbompiani.com/images/projects/recipe2.jpg)
+![](ReadmeImages/timeline.jpg)
 
 #### 3. View Buildings by Use, Condition, and Historical Designation
 - Use the dropdown list to graphically view building properties
+![](ReadmeImages/Styling.jpg)
 
 #### 4. Toggle Traffic Crash Data
 - Circles indicate accident intersections, scaled by number of incidents
+![](ReadmeImages/accidents.jpg)
 
 <p>&nbsp;</p>
 
