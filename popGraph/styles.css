@@ -1,0 +1,29 @@
+
+h1 {
+    font-family: sans-serif
+}
+
+.year-axis path, .year-axis line,
+.pop-axis path, .pop-axis line,
+.gsf-axis path, .gsf-axis line
+ {
+    stroke-width: 1.5;
+    stroke: dimgray;
+}
+
+.gsf-axis path, .gsf-axis line {
+    stroke: orange;
+}
+
+.year-axis text,
+.pop-axis text,
+.gsf-axis text
+ {
+    font-size: 12;
+    fill: dimgray;
+}
+
+.gsf-axis text
+ {
+    fill: orange;
+}

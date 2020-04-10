@@ -1,6 +1,5 @@
 // ---- VARIABLES --- //
 let pop = [];
-let projectedPop = [];
 
 let gsf = [];
 let approvedGsf = [];
@@ -63,7 +62,8 @@ db.collection("population").orderBy('year').get().then((res) => {
         .tickFormat(d3.format("d"));
 
     const popAxis = d3.axisLeft(popScale)
-        .ticks(4);
+        .ticks(4)
+        .tickFormat(d => d / 1e3 + "K");
 
     yearAxisGroup.call(yearAxis);
     popAxisGroup.call(popAxis);
@@ -129,7 +129,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     gsfScale.domain([5000000, 20000000]);
 
     const gsfAxis = d3.axisRight(gsfScale)
-        .ticks(4);
+        .ticks(4)
+        .tickFormat(d => d / 1e6 + "M");
 
     gsfAxisGroup.call(gsfAxis);
 
@@ -257,7 +258,7 @@ svgPat.select("defs")
 svgPat.select("defs")
     .select("#lines-sparse")
     .append("rect")
-    .attr("width", 6)
+    .attr("width", 7)
     .attr("height", 10)
     .attr("transform", "translate(0,0)")
     .attr("fill", "orange");
