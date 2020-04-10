@@ -4,6 +4,9 @@ let pop = [];
 let gsf = [];
 let approvedGsf = [];
 let projectedGsf = [];
+let fourGsf = [];
+let fiveGsf = [];
+let makeupGsf = [];
 
 let firstYear = 2004;
 let lastYear = 2020;
@@ -29,7 +32,7 @@ const graph = svg.append('g')
 // ---- GRAPH SCALES / AXES --- //
 const yearScale = d3.scaleLinear().range([0, graphWidth]);
 const popScale = d3.scaleLinear().range([graphHeight, 0]);
-const gsfScale = d3.scaleLinear().range([graphHeight, 0]);
+const gsfScale = d3.scaleLinear().range([graphHeight, 100]);
 
 const yearAxisGroup = graph.append('g')
     .attr('class', 'year-axis')
@@ -55,15 +58,15 @@ db.collection("population").orderBy('year').get().then((res) => {
 
     // set graph axes domains
     yearScale.domain(d3.extent(pop, p => p.year));
-    popScale.domain([0, d3.max(pop, p => p.students)]);
+    popScale.domain([0, 40000]);
 
     const yearAxis = d3.axisBottom(yearScale)
-        .ticks(4)
-        .tickFormat(d3.format("d"));
+        .ticks(pop.length)
+        .tickFormat(d => d % 4 == 0 ? d3.format("d")(d) : null);
 
     const popAxis = d3.axisLeft(popScale)
-        .ticks(4)
-        .tickFormat(d => d / 1e3 + "K");
+        .ticks(6)
+        .tickFormat(d => d > 10000 ? d / 1e3 + "K" : null);
 
     yearAxisGroup.call(yearAxis);
     popAxisGroup.call(popAxis);
@@ -102,7 +105,6 @@ db.collection("population").orderBy('year').get().then((res) => {
         .attr('y', d => popScale(d.students) - 3)
         .attr('fill', 'black');
 
-
 });
 
 
@@ -135,6 +137,72 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     gsfAxisGroup.call(gsfAxis);
 
     // --- areas --- //
+
+    //area fill for 400 gsf
+    fiveGsf = pop.map(p => {
+        const calcedGsf = {
+            year: p.year,
+            gsf: p.students * 500
+        };
+        return calcedGsf;
+    });
+
+    graph.append("path")
+        .datum(fiveGsf)
+        .attr("fill", "orange")
+        .attr("fill-opacity", .1)
+        .attr("stroke", "none")
+        .attr("d", d3.area()
+            .x(function (d) { return yearScale(d.year) })
+            .y0(graphHeight)
+            .y1(function (d) { return gsfScale(d.gsf) })
+        )
+
+    //area fill for 400 gsf
+    fourGsf = pop.map(p => {
+        const calcedGsf = {
+            year: p.year,
+            gsf: p.students * 400
+        };
+        return calcedGsf;
+    });
+
+    graph.append("path")
+        .datum(fourGsf)
+        .attr("fill", "orange")
+        .attr("fill-opacity", .2)
+        .attr("stroke", "none")
+        .attr("d", d3.area()
+            .x(function (d) { return yearScale(d.year) })
+            .y0(graphHeight)
+            .y1(function (d) { return gsfScale(d.gsf) })
+        )
+
+    //area fill for makeup gsf
+    makeupGsf.push(approvedGsf[1], fourGsf[fourGsf.length - 1], projectedGsf[1]);
+    console.log(makeupGsf);
+
+    graph.append("path")
+        .datum(makeupGsf)
+        .attr("fill", "url(#lines-makeup)")
+        .attr("fill-opacity", .7)
+        .attr("stroke", "none")
+        .attr("d", d3.line()
+            .x(function (d) { return yearScale(d.year) })
+            .y(function (d) { return gsfScale(d.gsf) })
+        )
+
+    graph.append("path")
+        .datum(makeupGsf.slice(0, 2))
+        .attr("fill", "none")
+        .attr("stroke", "LimeGreen")
+        .attr("stroke-width", 2)
+        .attr('stroke-dasharray', "10 4")
+        .attr("d", d3.line()
+            .x(function (d) { return yearScale(d.year) })
+            .y(function (d) { return gsfScale(d.gsf) })
+        )
+
     //area fill for known gsf
     graph.append("path")
         .datum(gsf.filter(d => !d.projected && !d.approved))
@@ -171,7 +239,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
             .y1(function (d) { return gsfScale(d.gsf) })
         )
 
-
+    // --- lines --- //
     // Add the line for known gsf
     graph.append("path")
         .datum(gsf.filter(d => !d.projected))
@@ -208,8 +276,6 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
 });
 
-console.log(pop);
-console.log(gsf);
 
 // ---- SVG PATTERNS --- //
 // SVG injection:
@@ -262,3 +328,18 @@ svgPat.select("defs")
     .attr("height", 10)
     .attr("transform", "translate(0,0)")
     .attr("fill", "orange");
+
+//loose pattern
+svgPat.select("defs")
+    .append("pattern")
+    .attr("id", "lines-makeup")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("patternUnits", "userSpaceOnUse")
+    .attr("patternTransform", "rotate(90)")
+    .append("rect")
+    .attr("width", 2)
+    .attr("height", 10)
+    .attr("transform", "translate(0,0)")
+    .attr("fill", "LimeGreen")
+    .attr("fill-opacity", .4);
