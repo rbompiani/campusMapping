@@ -138,7 +138,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
     // --- areas --- //
 
-    //area fill for 400 gsf
+    //area fill for 500 gsf
     fiveGsf = pop.map(p => {
         const calcedGsf = {
             year: p.year,
@@ -149,6 +149,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
     graph.append("path")
         .datum(fiveGsf)
+        .attr('class', 'gsf')
+        .attr('id', 'five')
         .attr("fill", "orange")
         .attr("fill-opacity", .1)
         .attr("stroke", "none")
@@ -169,6 +171,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
     graph.append("path")
         .datum(fourGsf)
+        .attr('class', 'gsf')
+        .attr('id', 'four')
         .attr("fill", "orange")
         .attr("fill-opacity", .2)
         .attr("stroke", "none")
@@ -184,6 +188,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
     graph.append("path")
         .datum(makeupGsf)
+        .attr('class', 'gsf')
+        .attr('id', 'makeup')
         .attr("fill", "url(#lines-makeup)")
         .attr("fill-opacity", .7)
         .attr("stroke", "none")
@@ -196,7 +202,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
         .datum(makeupGsf.slice(0, 2))
         .attr("fill", "none")
         .attr("stroke", "LimeGreen")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 1)
         .attr('stroke-dasharray', "10 4")
         .attr("d", d3.line()
             .x(function (d) { return yearScale(d.year) })
@@ -206,6 +212,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     //area fill for known gsf
     graph.append("path")
         .datum(gsf.filter(d => !d.projected && !d.approved))
+        .attr('class', 'gsf')
+        .attr('id', 'known')
         .attr("fill", "orange")
         .attr("fill-opacity", .7)
         .attr("stroke", "none")
@@ -218,6 +226,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     //area fill for approved gsf
     graph.append("path")
         .datum(approvedGsf)
+        .attr('class', 'gsf')
+        .attr('id', 'approved')
         .attr("fill", "url(#lines-dense)")
         .attr("fill-opacity", .7)
         .attr("stroke", "none")
@@ -230,6 +240,8 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     //area fill for projected gsf
     graph.append("path")
         .datum(projectedGsf)
+        .attr('class', 'gsf')
+        .attr('id', 'projected')
         .attr("fill", "url(#lines-sparse)")
         .attr("fill-opacity", .7)
         .attr("stroke", "none")
@@ -256,7 +268,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
         .datum(projectedGsf)
         .attr("fill", "none")
         .attr("stroke", "DarkOrange")
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 2)
         .attr('stroke-dasharray', "10 4")
         .attr("d", d3.line()
             .x(function (d) { return yearScale(d.year) })
@@ -272,9 +284,37 @@ db.collection("gsf").orderBy('year').get().then((res) => {
         .attr('r', 3)
         .attr('cx', d => yearScale(d.year))
         .attr('cy', d => gsfScale(d.gsf))
-        .attr('fill', 'DarkOrange');
+        .attr('fill', 'white')
+        .attr('stroke-width', 2)
+        .attr('stroke', 'DarkOrange');
 
+    graph.selectAll('circle')
+        .on('mouseover', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                .attr('r', 6);
+        })
+        .on('mouseleave', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                .attr('r', 3);
+        });
+
+    /* ---- gsf events --- //
+    const gsfs = d3.selectAll('.gsf');
+    gsfs.on('mouseover', (d, i, n) => {
+        const curId = d3.select(n[i]).attr("id");
+        console.log(curId);
+        switch (curId)
+    })
+    */
+    const gsfs = d3.selectAll('.gsf');
+    gsfs.on('mouseover', mouseover)
+        .on('mousemove', mousemove)
+        .on('mouseleave', mouseleave);
 });
+
+
 
 
 // ---- SVG PATTERNS --- //
@@ -343,3 +383,52 @@ svgPat.select("defs")
     .attr("transform", "translate(0,0)")
     .attr("fill", "LimeGreen")
     .attr("fill-opacity", .4);
+
+// ---- TOOLTIPS --- //
+// create a tooltip
+var Tooltip = d3.select('.canvas')
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+
+// Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function (d) {
+    Tooltip
+        .style("opacity", 1)
+    d3.select(this)
+        .style("stroke", "orange");
+}
+
+var mousemove = function (d) {
+    const gsfType = this.id;
+    let hoverString;
+
+    switch (gsfType) {
+        case "known":
+            hoverString = "Recorded GSF";
+            break;
+        case "projected":
+            hoverString = "Projected GSF";
+            break;
+        default:
+            hoverString = "waiting...";
+            break;
+    }
+
+    Tooltip
+        .html(hoverString)
+        .style("left", (d3.mouse(this)[0] + 70) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+}
+
+var mouseleave = function (d) {
+    Tooltip
+        .style("opacity", 0)
+    d3.select(this)
+        .style("stroke", "none")
+}
