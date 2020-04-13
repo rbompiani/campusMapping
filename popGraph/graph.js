@@ -7,6 +7,7 @@ let projectedGsf = [];
 let fourGsf = [];
 let fiveGsf = [];
 let makeupGsf = [];
+let gsfPerYear;
 
 let firstYear = 2004;
 let lastYear = 2020;
@@ -46,6 +47,23 @@ const gsfAxisGroup = graph.append('g')
     .attr('class', 'gsf-axis')
     .attr('transform', `translate(${graphWidth + axisOffset}, 0)`);
 
+graph.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 5 - margin.left)
+    .attr("x", 0 - (graphHeight / 3))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("fill", "dimgray")
+    .text("Student Population");
+
+graph.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", graphWidth + margin.right / 3 * 2)
+    .attr("x", 0 - ((graphHeight + 100) / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("fill", "orange")
+    .text("Gross Square Feet");
 
 // ---- RETRIEVE POPULATION DATA --- //
 db.collection("population").orderBy('year').get().then((res) => {
@@ -120,7 +138,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
     // push data to approved gsf and calculate rate of increase per year
     approvedGsf.push(...gsf.slice(gsf.length - 2));
     projectedGsf.push(gsf[gsf.length - 1]);
-    const gsfPerYear = (approvedGsf[1].gsf - approvedGsf[0].gsf) / (approvedGsf[1].year - approvedGsf[0].year);
+    gsfPerYear = (approvedGsf[1].gsf - approvedGsf[0].gsf) / (approvedGsf[1].year - approvedGsf[0].year);
     const projectedTotalGSF = gsfPerYear * (lastYear - projectedGsf[0].year) + projectedGsf[0].gsf;
     gsf.push({ year: lastYear, gsf: projectedTotalGSF, projected: true });
     projectedGsf.push(gsf[gsf.length - 1]);
@@ -128,7 +146,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
 
     // set graph axes domains
-    gsfScale.domain([5000000, 20000000]);
+    gsfScale.domain([5 * 1e6, 20 * 1e6]);
 
     const gsfAxis = d3.axisRight(gsfScale)
         .ticks(4)
@@ -388,13 +406,18 @@ svgPat.select("defs")
 // create a tooltip
 var Tooltip = d3.select('.canvas')
     .append("div")
+    .style("position", "absolute")
+    .style("width", "180px")
+    .style("padding", "0 10px")
     .style("opacity", 0)
     .attr("class", "tooltip")
     .style("background-color", "white")
     .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px")
+    .style("filter", "drop-shadow(0px 1px 2px rgba(100, 100, 100, 0.5))")
+    .style("border-width", "1px")
+    .style("border-radius", "3px")
+    .style("border-color", "3px");
+
 
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function (d) {
@@ -406,29 +429,55 @@ var mouseover = function (d) {
 
 var mousemove = function (d) {
     const gsfType = this.id;
+    let hoverTitle;
     let hoverString;
 
     switch (gsfType) {
         case "known":
-            hoverString = "Recorded GSF";
+            hoverTitle = "Recorded GSF";
+            hoverString = "Total GSF of constructed campus";
+            break;
+        case "approved":
+            hoverTitle = "Approved GSF";
+            hoverString = "Total GSF including buildings in design or construction phases";
             break;
         case "projected":
-            hoverString = "Projected GSF";
+            hoverTitle = "Projected GSF";
+            hoverString = "Projected total GSF based on current campus construction trends <br /> (+" + gsfPerYear.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + " GSF/year)";
+            break;
+        case "four":
+            hoverTitle = "400 GSF per Student";
+            hoverString = "Calculated area illustrating 400 GSF per student";
+            break;
+        case "five":
+            hoverTitle = "500 GSF per Student";
+            hoverString = "Calculated area illustrating 500 GSF per student, targeted in 2004 master plan";
+            break;
+        case "five":
+            hoverTitle = "500 GSF per Student";
+            hoverString = "Calculated area illustrating 500 GSF per student, targeted in 2004 master plan";
+            break;
+        case "makeup":
+            hoverTitle = "Catch Up GSF";
+            hoverString = "Calculated area illustrating the increased construction needed to achieve 400 GSF per Student by 35K enrollment";
             break;
         default:
-            hoverString = "waiting...";
+            hoverTitle = "Fix Me";
+            hoverString = "Something is wrong";
             break;
     }
 
-    Tooltip
-        .html(hoverString)
-        .style("left", (d3.mouse(this)[0] + 70) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
+    const toolData = `<h3>${hoverTitle}</h3><p>${hoverString}</p>`;
+
+    Tooltip.html(toolData)
+        .style("left", (d3.mouse(this)[0]) + "px")
+        .style("top", (d3.mouse(this)[1] - Tooltip.node().getBoundingClientRect().height + 100) + "px");
 }
 
 var mouseleave = function (d) {
     Tooltip
-        .style("opacity", 0)
+        .html("")
+        .style("opacity", 0);
     d3.select(this)
         .style("stroke", "none")
 }
