@@ -65,6 +65,17 @@ graph.append("text")
     .style("fill", "orange")
     .text("Gross Square Feet");
 
+// ---- HOVER INFO --- //
+const dataPoint = graph.append('g')
+    .attr("id", "data-point")
+    .attr("opacity", 0);
+
+const dataText = dataPoint.append("text")
+    .text("testing")
+    .style("text-anchor", "middle");
+
+
+
 // ---- RETRIEVE POPULATION DATA --- //
 db.collection("population").orderBy('year').get().then((res) => {
     res.forEach((doc) => {
@@ -116,6 +127,7 @@ db.collection("population").orderBy('year').get().then((res) => {
             .y(function (d) { return popScale(d.students) })
         )
 
+
     const popPoints = graph.selectAll('rect')
         .data(pop);
 
@@ -131,6 +143,39 @@ db.collection("population").orderBy('year').get().then((res) => {
     pops.on('mouseover', lineMouseover)
         .on('mousemove', lineMousemove)
         .on('mouseleave', lineMouseleave);
+
+    graph.selectAll('rect')
+        .on('mouseover', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                .attr('width', 12)
+                .attr('height', 12)
+                .attr("transform", "translate(-3,-3)");
+
+            dataPoint.attr("transform", `translate(${yearScale(d.year)},${popScale(d.students) - 15})`)
+                .attr("opacity", 1);
+            dataText.text(formatNumber(d.students));
+        })
+        .on('mouseleave', (d, i, n) => {
+            d3.select(n[i])
+                .transition().duration(100)
+                .attr('width', 6)
+                .attr('height', 6)
+                .attr("transform", "translate(0,0)");
+
+            dataPoint.attr("opacity", 0);
+            dataText.text("");
+        });
+
+    const yearMarker = graph.append("line")
+        .attr("fill", "none")
+        .attr("stroke", "LimeGreen")
+        .attr("stroke-width", 1)
+        .attr('stroke-dasharray', "20 4 4 4")
+        .attr("x1", yearScale(currentYear))
+        .attr("x2", yearScale(currentYear))
+        .attr("y1", -margin.top)
+        .attr("y2", graphHeight + margin.bottom);
 });
 
 
@@ -319,21 +364,20 @@ db.collection("gsf").orderBy('year').get().then((res) => {
             d3.select(n[i])
                 .transition().duration(100)
                 .attr('r', 6);
+
+            dataPoint.attr("transform", `translate(${yearScale(d.year)},${gsfScale(d.gsf) - 15})`)
+                .attr("opacity", 1);
+            dataText.text(formatNumber(d.gsf) + " GSF");
         })
         .on('mouseleave', (d, i, n) => {
             d3.select(n[i])
                 .transition().duration(100)
-                .attr('r', 3);
+                .attr('r', 3)
+            dataPoint.attr("transform", `translate(${yearScale(d.year)},${gsfScale(d.gsf) - 15})`)
+                .attr("opacity", 0);
+            dataText.text("");
         });
 
-    /* ---- gsf events --- //
-    const gsfs = d3.selectAll('.gsf');
-    gsfs.on('mouseover', (d, i, n) => {
-        const curId = d3.select(n[i]).attr("id");
-        console.log(curId);
-        switch (curId)
-    })
-    */
     const gsfs = d3.selectAll('.gsf');
     gsfs.on('mouseover', mouseover)
         .on('mousemove', mousemove)
@@ -432,7 +476,8 @@ var mouseover = function (d) {
     Tooltip
         .style("opacity", 1)
     d3.select(this)
-        .style("stroke", "orange");
+        .style("stroke", "darkorange")
+        .style("stroke-width", 4);
 }
 
 var mousemove = function (d) {
@@ -478,7 +523,7 @@ var mousemove = function (d) {
     const toolData = `<h3>${hoverTitle}</h3><p>${hoverString}</p>`;
 
     Tooltip.html(toolData)
-        .style("left", (d3.mouse(this)[0]) + "px")
+        .style("left", (d3.mouse(this)[0]) + graph.node().getBoundingClientRect().x + "px")
         .style("top", (d3.mouse(this)[1] - Tooltip.node().getBoundingClientRect().height + 100) + "px");
 }
 
@@ -506,7 +551,7 @@ var lineMousemove = function (d) {
             hoverTitle = "Recorded Enrollment";
             break;
         case "projected":
-            hoverTitle = "Projected Enrollment";
+            hoverTitle = "Projected Enrollment <br />(+4% / year)";
             break;
         default:
             hoverTitle = "Fix Me";
@@ -517,7 +562,7 @@ var lineMousemove = function (d) {
 
     Tooltip.html(toolData)
         .style("left", (d3.mouse(this)[0]) + "px")
-        .style("top", (d3.mouse(this)[1] - Tooltip.node().getBoundingClientRect().height + 100) + "px");
+        .style("top", (d3.mouse(this)[1] - Tooltip.node().getBoundingClientRect().height + 50) + "px");
 }
 
 var lineMouseleave = function (d) {
@@ -526,4 +571,8 @@ var lineMouseleave = function (d) {
         .style("opacity", 0);
     d3.select(this)
         .style("stroke-width", 2)
+}
+
+const formatNumber = (num) => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
