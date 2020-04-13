@@ -367,7 +367,7 @@ db.collection("gsf").orderBy('year').get().then((res) => {
 
             dataPoint.attr("transform", `translate(${yearScale(d.year)},${gsfScale(d.gsf) - 15})`)
                 .attr("opacity", 1);
-            dataText.text(formatNumber(d.gsf) + " GSF");
+            dataText.text(formatNumber(d.gsf));
         })
         .on('mouseleave', (d, i, n) => {
             d3.select(n[i])
