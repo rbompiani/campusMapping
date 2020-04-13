@@ -92,6 +92,8 @@ db.collection("population").orderBy('year').get().then((res) => {
     // Add the line for projected numbers
     graph.append("path")
         .datum(pop.filter(d => d.projected || d.year == currentYear))
+        .attr("class", "pop")
+        .attr("id", "projected")
         .attr("fill", "none")
         .attr("stroke", "black")
         .attr("stroke-width", 1)
@@ -104,6 +106,8 @@ db.collection("population").orderBy('year').get().then((res) => {
     // Add the line for known population
     graph.append("path")
         .datum(pop.filter(d => !d.projected))
+        .attr("class", "pop")
+        .attr("id", "actual")
         .attr("fill", "none")
         .attr("stroke", "black")
         .attr("stroke-width", 2)
@@ -123,6 +127,10 @@ db.collection("population").orderBy('year').get().then((res) => {
         .attr('y', d => popScale(d.students) - 3)
         .attr('fill', 'black');
 
+    const pops = d3.selectAll('.pop');
+    pops.on('mouseover', lineMouseover)
+        .on('mousemove', lineMousemove)
+        .on('mouseleave', lineMouseleave);
 });
 
 
@@ -480,4 +488,42 @@ var mouseleave = function (d) {
         .style("opacity", 0);
     d3.select(this)
         .style("stroke", "none")
+}
+
+var lineMouseover = function (d) {
+    Tooltip
+        .style("opacity", 1)
+    d3.select(this)
+        .style("stroke-width", 4);
+}
+
+var lineMousemove = function (d) {
+    const popType = this.id;
+    let hoverTitle;
+
+    switch (popType) {
+        case "actual":
+            hoverTitle = "Recorded Enrollment";
+            break;
+        case "projected":
+            hoverTitle = "Projected Enrollment";
+            break;
+        default:
+            hoverTitle = "Fix Me";
+            break;
+    }
+
+    const toolData = `<h3>${hoverTitle}</h3>`;
+
+    Tooltip.html(toolData)
+        .style("left", (d3.mouse(this)[0]) + "px")
+        .style("top", (d3.mouse(this)[1] - Tooltip.node().getBoundingClientRect().height + 100) + "px");
+}
+
+var lineMouseleave = function (d) {
+    Tooltip
+        .html("")
+        .style("opacity", 0);
+    d3.select(this)
+        .style("stroke-width", 2)
 }
